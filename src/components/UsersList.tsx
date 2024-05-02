@@ -3,7 +3,7 @@ import { type User } from "../types"
 interface Props{
   users: User[],
   showColors: boolean,
-  handleDelete: (index: number) => void,
+  handleDelete: (email: string) => void,
   
 }
 
@@ -37,7 +37,7 @@ const UsersList = ({ users, showColors, handleDelete }: Props) => {
               <td>{user.name.last}</td>
               <td>{user.location.country}</td>
               <td>
-                <button onClick={()=> handleDelete(index)}>Delete</button>
+                <button onClick={()=> handleDelete(user.email)}>Delete</button>
               </td>
             </tr>
           );

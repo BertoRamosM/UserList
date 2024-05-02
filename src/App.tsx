@@ -20,8 +20,8 @@ function App() {
     return a.location.country.localeCompare(b.location.country);
   }) : users
   
-  const handleDelete = (index: number) => {
-    const filteredUsers = users.filter((user, userIndex) => userIndex !== index)
+  const handleDelete = (email: string) => {
+    const filteredUsers = users.filter((user) => user.email !== email)
       setUsers(filteredUsers) 
   }
 
