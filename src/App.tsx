@@ -18,7 +18,12 @@ function App() {
 
   const sortedUsers = sortByCountry ? users.toSorted((a, b) => {
     return a.location.country.localeCompare(b.location.country);
-}) : users
+  }) : users
+  
+  const handleDelete = (index: number) => {
+    const filteredUsers = users.filter((user, userIndex) => userIndex !== index)
+      setUsers(filteredUsers) 
+  }
 
   
   useEffect(() => {
@@ -40,7 +45,7 @@ function App() {
         <button onClick={toggleColors}>Colors</button>
         <button onClick={ToggleSortByCountry}>{sortByCountry ? 'Remove sort' : 'Sorty by country'} </button>
       </header>
-      <UsersList users={sortedUsers} showColors={showColors} />
+      <UsersList users={sortedUsers} showColors={showColors} handleDelete={handleDelete} />
     </>
   )
 }
