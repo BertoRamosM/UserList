@@ -5,6 +5,11 @@ import UsersList from './components/UsersList'
 
 function App() {
   const [users, setUsers] = useState<User[]>([])
+  const [showColors, setShowColors] = useState(false)
+
+  const toggleColors = () => {
+    setShowColors(!showColors);
+  }
   
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=100")
@@ -20,7 +25,11 @@ function App() {
  
   return (
     <>
-      <UsersList users={users} />
+      <h1>List of users</h1>
+      <header>
+        <button onClick={toggleColors}>Colors</button>
+      </header>
+      <UsersList users={users} showColors={showColors} />
     </>
   )
 }
