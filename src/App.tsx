@@ -22,7 +22,9 @@ function App() {
     setUsers(originalUsers.current)
   }
 
-  const filteredUsers = filterCountry ? users.filter(user => {
+
+  //we filter before sorting to void extra rendering
+  const filteredUsers = typeof filterCountry === 'string' && filterCountry.length > 0 ? users.filter(user => {
     return user.location.country.toLowerCase().includes(filterCountry.toLowerCase())
   }): users
 
