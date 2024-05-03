@@ -102,10 +102,7 @@ function App() {
         />
       </header>
       <main>
-        {loading && <div className="loader"></div>}
-        {!loading && error && <p>Oooops... There was a problem</p>}
-        {!loading && !error && users.length === 0 && <p>No users to display</p>}
-        {!loading && !error && users.length > 0 && (
+        {users.length > 0 && (
           <UsersList
             changeSorting={handleChangeSort}
             users={sortedUsers}
@@ -113,6 +110,9 @@ function App() {
             handleDelete={handleDelete}
           />
         )}
+        {loading && <div className="loader"></div>}
+        {!loading && error && <p>Oooops... There was a problem</p>}
+        {!loading && !error && users.length === 0 && <p>No users to display</p>}
 
         {!loading && !error && (
           <button onClick={() => setCurrentPage(currentPage + 1)}>
