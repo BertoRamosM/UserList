@@ -4,3 +4,15 @@
   padding: 2rem;
   text-align: center;
 }
+
+header {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
+}

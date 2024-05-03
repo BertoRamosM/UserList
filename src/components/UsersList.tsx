@@ -1,35 +1,43 @@
-import { type User } from "../types"
+import { SortBy, type User } from "../types.d"
 
-interface Props{
-  users: User[],
-  showColors: boolean,
-  handleDelete: (email: string) => void,
-  
+interface Props {
+  users: User[];
+  showColors: boolean;
+  handleDelete: (email: string) => void;
+  changeSorting: (sort: SortBy) => void;
 }
 
-const UsersList = ({ users, showColors, handleDelete }: Props) => {
-  
-  
+const UsersList = ({
+  changeSorting,
+  users,
+  showColors,
+  handleDelete,
+}: Props) => {
   return (
-    <table style={{border: '1px solid gray', width: '100%'}}>
+    <table style={{width: "100%" }}>
       <thead>
         <tr>
           <th>Picture</th>
-          <th>Name</th>
-          <th>Surname</th>
-          <th>Country</th>
+          <th className="pointer" onClick={() => changeSorting(SortBy.NAME)}>
+            Name
+          </th>
+          <th className="pointer" onClick={() => changeSorting(SortBy.LAST)}>
+            Surname
+          </th>
+          <th className="pointer" onClick={() => changeSorting(SortBy.COUNTRY)}>
+            Country
+          </th>
           <th>Actions</th>
         </tr>
       </thead>
 
-      <tbody style={{border: '1px solid gray'}}>
+      <tbody style={{ border: "1px solid gray" }}>
         {users.map((user, index) => {
-          const backgroundColor = index % 2 === 0 ? '#333' : '#555'
-          const color = showColors ? backgroundColor : 'transparent'
-
+          const backgroundColor = index % 2 === 0 ? "#333" : "#555";
+          const color = showColors ? backgroundColor : "transparent";
 
           return (
-            <tr key={user.email} style={{backgroundColor: color}}>
+            <tr key={user.email} style={{ backgroundColor: color }}>
               <td>
                 <img src={user.picture.thumbnail} alt={`${user.name} image`} />
               </td>
@@ -37,7 +45,7 @@ const UsersList = ({ users, showColors, handleDelete }: Props) => {
               <td>{user.name.last}</td>
               <td>{user.location.country}</td>
               <td>
-                <button onClick={()=> handleDelete(user.email)}>Delete</button>
+                <button onClick={() => handleDelete(user.email)}>Delete</button>
               </td>
             </tr>
           );
@@ -45,6 +53,6 @@ const UsersList = ({ users, showColors, handleDelete }: Props) => {
       </tbody>
     </table>
   );
-}
+};
 
 export default UsersList
