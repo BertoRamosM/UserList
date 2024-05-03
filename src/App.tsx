@@ -13,6 +13,8 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(1)
+
   const toggleColors = () => {
     setShowColors(!showColors);
   };
@@ -39,10 +41,11 @@ function App() {
   useEffect(() => {
     setLoading(true)
     setError(false)
-    fetch("https://randomuser.me/api/?results=100")
+
+    fetch(`https://randomuser.me/api/?results=10&seed=ramos&page=${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
-        setUsers(data.results);
+        setUsers(prevState => prevState.concat( data.results));
         originalUsers.current = data.results;
       })
       .catch((error) => {
@@ -52,7 +55,7 @@ function App() {
       .finally(() => {
       setLoading(false)
     })
-  }, []);
+  }, [currentPage]);
 
   //we filter before sorting to void extra rendering
   const filteredUsers = useMemo(() => {
@@ -109,6 +112,12 @@ function App() {
             showColors={showColors}
             handleDelete={handleDelete}
           />
+        )}
+
+        {!loading && !error && (
+          <button onClick={() => setCurrentPage(currentPage + 1)}>
+            Load more results
+          </button>
         )}
       </main>
     </>
