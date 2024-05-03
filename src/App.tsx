@@ -10,6 +10,9 @@ function App() {
   const originalUsers = useRef<User[]>([]);
   const [filterCountry, setFilterCountry] = useState<String | null>(null);
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
   const toggleColors = () => {
     setShowColors(!showColors);
   };
@@ -34,6 +37,7 @@ function App() {
   };
 
   useEffect(() => {
+    setLoading(true)
     fetch("https://randomuser.me/api/?results=100")
       .then((res) => res.json())
       .then((data) => {
@@ -42,7 +46,10 @@ function App() {
       })
       .catch((error) => {
         console.error(error);
-      });
+      })
+    .finally(() => {
+      setLoading(false)
+    })
   }, []);
 
   //we filter before sorting to void extra rendering
@@ -78,7 +85,9 @@ function App() {
       <header>
         <button onClick={toggleColors}>Colors</button>
         <button onClick={ToggleSortByCountry}>
-          {sorting === SortBy.COUNTRY ? "Don`t sort by country" : "Sorty by country"}{" "}
+          {sorting === SortBy.COUNTRY
+            ? "Don`t sort by country"
+            : "Sorty by country"}{" "}
         </button>
         <button onClick={handleReset}>Restore original users</button>
         <input
@@ -87,12 +96,19 @@ function App() {
           onChange={(e) => setFilterCountry(e.target.value)}
         />
       </header>
-      <UsersList
-        changeSorting = {handleChangeSort}
-        users={sortedUsers}
-        showColors={showColors}
-        handleDelete={handleDelete}
-      />
+      <main>
+        {loading && <p>Loading...</p>}
+        {!loading && error && <p>Error fetching data</p>}
+        {!loading && !error && users.length === 0 && <p>No users to display</p>}
+        {!loading && !error && users.length > 0 && (
+          <UsersList
+            changeSorting={handleChangeSort}
+            users={sortedUsers}
+            showColors={showColors}
+            handleDelete={handleDelete}
+          />
+        )}
+      </main>
     </>
   );
 }

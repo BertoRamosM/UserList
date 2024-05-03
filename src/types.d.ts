@@ -5,7 +5,7 @@ declare global{
 }
 
 export interface Root {
-  results: User[];
+  results: User[] ;
   info: Info;
 }
 
