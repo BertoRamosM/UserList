@@ -38,6 +38,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true)
+    setError(false)
     fetch("https://randomuser.me/api/?results=100")
       .then((res) => res.json())
       .then((data) => {
@@ -45,9 +46,10 @@ function App() {
         originalUsers.current = data.results;
       })
       .catch((error) => {
+        setError(error)
         console.error(error);
       })
-    .finally(() => {
+      .finally(() => {
       setLoading(false)
     })
   }, []);
@@ -97,8 +99,8 @@ function App() {
         />
       </header>
       <main>
-        {loading && <p>Loading...</p>}
-        {!loading && error && <p>Error fetching data</p>}
+        {loading && <div className="loader"></div>}
+        {!loading && error && <p>Oooops... There was a problem</p>}
         {!loading && !error && users.length === 0 && <p>No users to display</p>}
         {!loading && !error && users.length > 0 && (
           <UsersList
