@@ -2,8 +2,26 @@ import { SortBy, type User } from "./types.d";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import UsersList from "./components/UsersList";
+import { useQuery } from "@tanstack/react-query"
+
+const fetchUsers = async (page: number) => {
+    return await fetch(
+      `https://randomuser.me/api/?results=10&seed=ramos&page=${page}`
+    )
+      .then(async res => await res.json())
+      .then((data) => {
+       return data.results
+      });
+}
+
 
 function App() {
+  
+ useQuery(
+    ['users'],
+    () => fetchUsers(1)
+  ) 
+  
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
@@ -42,12 +60,14 @@ function App() {
     setLoading(true)
     setError(false)
 
-    fetch(`https://randomuser.me/api/?results=10&seed=ramos&page=${currentPage}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(prevState => prevState.concat( data.results));
-        originalUsers.current = data.results;
+    fetchUsers(currentPage)
+      .then(users => {
+        setUsers(prevState => {
+        const newUsers = prevState.concat(users)
+          originalUsers.current = newUsers;
+          return newUsers
       })
+  })
       .catch((error) => {
         setError(error)
         console.error(error);
@@ -111,8 +131,8 @@ function App() {
           />
         )}
         {loading && <div className="loader"></div>}
-        {!loading && error && <p>Oooops... There was a problem</p>}
-        {!loading && !error && users.length === 0 && <p>No users to display</p>}
+        {error && <p>Oooops... There was a problem</p>}
+        {!error && users.length === 0 && <p>No users to display</p>}
 
         {!loading && !error && (
           <button onClick={() => setCurrentPage(currentPage + 1)}>

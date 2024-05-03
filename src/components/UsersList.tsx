@@ -14,7 +14,7 @@ const UsersList = ({
   handleDelete,
 }: Props) => {
   return (
-    <table style={{width: "100%" }}>
+    <table style={{ width: "100%" }}>
       <thead>
         <tr>
           <th>Picture</th>
